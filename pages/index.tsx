@@ -17,19 +17,11 @@ const IndexPage: NextPage = () => {
       <Mutation
         mutation={gql`
           mutation {
-            register(
-              data: {
-                firstName: "김"
-                lastName: "장욱"
-                email: "sangwook123@naver.com"
-                password: "1111"
-              }
-            ) {
+            login(email: "sangwook99@naver.com", password: "1111") {
               id
               firstName
               lastName
               email
-              name
             }
           }
         `}
