@@ -2,19 +2,22 @@ import * as React from 'react';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import { NextPage } from 'next';
-//import { Mutation } from 'react-apollo';
-//import { gql } from 'apollo-boost';
-import { LoginComponent, LoginMutationFn } from '../generated/apolloComponents';
+import { useLoginMutation } from '../generated/apolloComponents';
 
 const IndexPage: NextPage = () => {
-  // 그냥 graphql-code-generate 만 쓴 것
-  const handleClick = async (mutate: LoginMutationFn) => {
-    const response = await mutate({
-      variables: { email: 'myung01@naver.com', password: '1111' }
-    });
+  // graphql-code-generate hooks 기능을 쓴것
+  const [loginMutation, { data, loading, error }] = useLoginMutation({
+    variables: {
+      email: 'myung01@naver.com',
+      password: '1111'
+    }
+  });
 
-    console.log(response);
-  };
+  if (loading || error) {
+    return <div>loading...</div>;
+  } else {
+    console.log('data:', data && data.login && data.login.email);
+  }
 
   return (
     <Layout title='Home | Next.js + TypeScript Example'>
@@ -36,13 +39,14 @@ const IndexPage: NextPage = () => {
           }
         `}
       > */}
-      <LoginComponent>
+      {/* <LoginComponent>
         {mutate => (
           <button onClick={() => handleClick(mutate)}>
             call login mutation
           </button>
         )}
-      </LoginComponent>
+      </LoginComponent> */}
+      <button onClick={() => loginMutation()}>call login mutation</button>
     </Layout>
   );
 };
