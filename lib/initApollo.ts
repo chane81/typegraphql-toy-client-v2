@@ -19,9 +19,15 @@ interface Options {
   getToken: () => string;
 }
 
+/**
+ * httpLink 설정시에 credentials 를 반드시 설정해 주어야 한다.
+ * 설정해주지 않았을 경우 apollo서버에서 보내주는
+ * 세션에 대한 response cookie 를 클라이언트에서 굽지 못한다.
+ */
 function create(initialState: any, { getToken }: Options) {
   const httpLink = createHttpLink({
-    uri: 'http://localhost:4000/graphql'
+    uri: 'http://localhost:4000/graphql',
+    credentials: 'include'
     // 종류: omit(생략), include(다른 도메인일 경우), same-origin(같은 도메인일 경우)
     //credentials: 'same-origin'
   });
